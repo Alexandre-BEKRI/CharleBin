@@ -31,7 +31,7 @@ class Vizhash16x16
      * @access private
      * @var    array
      */
-    private $VALUES;
+    private $_VALUES;
 
     /**
      * index of current value
@@ -39,7 +39,7 @@ class Vizhash16x16
      * @access private
      * @var    int
      */
-    private $VALUES_INDEX;
+    private $_VALUES_INDEX;
 
     /**
      * image width
@@ -47,7 +47,7 @@ class Vizhash16x16
      * @access private
      * @var    int
      */
-    private $width;
+    private $_width;
 
     /**
      * image height
@@ -55,7 +55,7 @@ class Vizhash16x16
      * @access private
      * @var    int
      */
-    private $height;
+    private $_height;
 
     /**
      * constructor
@@ -64,8 +64,8 @@ class Vizhash16x16
      */
     public function __construct()
     {
-        $this->width  = 16;
-        $this->height = 16;
+        $this->_width  = 16;
+        $this->_height = 16;
     }
 
     /**
@@ -86,14 +86,14 @@ class Vizhash16x16
         $textlen = strlen($text);
 
         // We convert the hash into an array of integers.
-        $this->VALUES = array();
+        $this->_VALUES = array();
         for ($i = 0; $i < $textlen; $i = $i + 2) {
-            array_push($this->VALUES, hexdec(substr($text, $i, 2)));
+            array_push($this->_VALUES, hexdec(substr($text, $i, 2)));
         }
-        $this->VALUES_INDEX = 0; // to walk the array.
+        $this->_VALUES_INDEX = 0; // to walk the array.
 
         // Then use these integers to drive the creation of an image.
-        $image = imagecreatetruecolor($this->width, $this->height);
+        $image = imagecreatetruecolor($this->_width, $this->_height);
 
         $r = $r0 = $this->getInt();
         $g = $g0 = $this->getInt();
@@ -134,9 +134,9 @@ class Vizhash16x16
      */
     private function getInt()
     {
-        $v = $this->VALUES[$this->VALUES_INDEX];
-        ++$this->VALUES_INDEX;
-        $this->VALUES_INDEX %= count($this->VALUES); // Warp around the array
+        $v = $this->_VALUES[$this->_VALUES_INDEX];
+        ++$this->_VALUES_INDEX;
+        $this->_VALUES_INDEX %= count($this->_VALUES); // Warp around the array
         return $v;
     }
 
@@ -148,7 +148,7 @@ class Vizhash16x16
      */
     private function getX()
     {
-        return $this->width * $this->getInt() / 256;
+        return $this->_width * $this->getInt() / 256;
     }
 
     /**
@@ -159,7 +159,7 @@ class Vizhash16x16
      */
     private function getY()
     {
-        return $this->height * $this->getInt() / 256;
+        return $this->_height * $this->getInt() / 256;
     }
 
     /**
