@@ -168,9 +168,8 @@ class I18n
             ($key = array_search($_COOKIE['lang'], $availableLanguages)) !== false
         ) {
             $match = $availableLanguages[$key];
-        }
-        // find a translation file matching the browsers language preferences
-        else {
+        } else {
+            // find a translation file matching the browsers language preferences
             $match = self::_getMatchingLanguage(
                 self::getBrowserLanguages(), $availableLanguages
             );
