@@ -39,12 +39,13 @@ class YourlsProxy
     private $_url = '';
 
     /**
-     * constructor
+     * Constructor
      *
-     * initializes and runs PrivateBin
+     * Initializes and runs PrivateBin
      *
      * @access public
-     * @param string $link
+     * @param  Configuration $conf
+     * @param  string $link 
      */
     public function __construct(Configuration $conf, $link)
     {
