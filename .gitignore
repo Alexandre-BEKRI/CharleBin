@@ -5,3 +5,5 @@ doc/*
 vendor
 log
 .phpunit.result.cache
+composer.lock
+composer.json
