@@ -87,6 +87,9 @@ lint:
 	
 	echo "Vérifications terminées !"
 ```
+**Remarque :** Pour les utilisateurs de Windows (PowerShell / CMD), l’exécution via `./vendor/bin/...` n’est pas supportée. Préférez l’une des alternatives suivantes :
+- Via PHP : `php vendor/bin/phpcs`, `php vendor/bin/phpmd`
+- Via l'exécutable .bat : `vendor/bin/phpcs.bat`, `vendor/bin/phpmd.bat`
 
 ## Processus de Pull Request (Workflow)
 <br>Pour toute modification, veuillez respecter ce processus :
