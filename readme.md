@@ -1,4 +1,5 @@
-# CharleBin
+# CharleBin 
+> (Compte rendu en Qualité de développement - BEKRI Alexandre)
 
 CharleBin est un gestionnaire d'extraits de texte et de code source (pastebin), minimaliste et open source. 
 Il s'agit d'une version modifiée de PrivateBin adaptée pour l'IUT Charlemagne, garantissant que le serveur n'a aucune connaissance des données envoyées (chiffrement AES 256 bits).
