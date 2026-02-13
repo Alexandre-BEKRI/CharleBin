@@ -22,7 +22,7 @@ use Exception;
 class View
 {
     /**
-     * variables available in the template
+     * Variables available in the template
      *
      * @access private
      * @var    array
@@ -30,7 +30,7 @@ class View
     private $_variables = array();
 
     /**
-     * assign variables to be used inside of the template
+     * Assign variables to be used inside of the template
      *
      * @access public
      * @param  string $name
@@ -42,7 +42,7 @@ class View
     }
 
     /**
-     * render a template
+     * Render a template
      *
      * @access public
      * @param  string $template
