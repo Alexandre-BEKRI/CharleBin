@@ -84,23 +84,47 @@ Il s'agit d'un script exécuté automatiquement avant chaque commit Git, vérifi
 ### Création du hook
 Création d’un script `.git/hooks/pre-commit` :
 ```bash
-    #!/usr/bin/env bash
+    #!/usr/bin/env bash    
+    
+    # Fonction qui concatène une liste en une chaîne séparée par des virgules 
+    function join_by {
+        local d=${1-} f=${2-}
+        if shift 2; then
+            printf %s "$f" "${@/#/$d}"
+        fi
+    }
     
     # Si une commande échoue, on arrête tout et le commit est annulé
     set -eo pipefail
-
-    echo "Correction automatique avec PHP CS Fixer..."
-    # On le lance pour le dossier lib
-    ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix lib
-
-    # On ajoute les fichiers potentiellement modifiés par le fixer
-    git add lib
-
-    echo "Analyse avec PHP Mess Detector"
-    # Si PHPmd trouve des erreurs, il renvoie un code d'erreur qui bloquera alors le commit
-    ./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming
-
-    echo "Commit validé !"
+    
+    # Récupèrer la liste des fichiers staged à ce commit (ACMR : Added, Copied, Modified, Renamed)
+    CHANGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR) # Format : "file1.php file2.php file3.php"
+    
+    # Transforme $CHANGED_FILES en une chaîne séparée par des virgules (utile en argument de PHPmd)
+    CHANGED_FILES_JOINED=$(join_by , $CHANGED_FILES) # Format : "toto.php,titi.php,tata.php"
+    
+    if [[ -n "$CHANGED_FILES" ]]
+    then
+        echo "Des fichiers modifiés sont détéctés : $CHANGED_FILES"
+    
+        echo "Lancement des vérifications..."
+        
+        echo "Correction automatique avec PHP CS Fixer..."
+        # On le lance pour le dossier lib
+        ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix $CHANGED_FILES
+    
+        # On ajoute les fichiers potentiellement modifiés par le fixer
+        git add $CHANGED_FILES
+    
+        echo "Analyse avec PHP Mess Detector"
+        # Si PHPmd trouve des erreurs, il renvoie un code d'erreur qui bloquera alors le commit
+        ./vendor/bin/phpmd $CHANGED_FILES_JOINED ansi codesize,unusedcode,naming
+    
+        echo "Votre commit est validé !"
+    else
+        echo "Aucun fichier modifié, commit annulé."
+        exit 0
+    fi
 ```
 Veuillez bien donner les permissions d'exécution (si besoin):
 ```bash
