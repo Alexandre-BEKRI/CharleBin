@@ -193,8 +193,6 @@ git commit -m "Ajout du workflow CI lint"
 git push -u origin main
 ```
 
-4. Ce rendre dans l'onglet "Actions" de votre dépôt GitHub pour voir le workflow en action à chaque PR. Si le workflow échoue, la PR ne pourra pas être mergée tant que les problèmes ne seront pas corrigés.
-
 ### Protéger la branche principale (`main`)
 Afin de forcer l'utilisation des Pull Requests et rendre l'étape de linting obligatoire avant toute fusion, il faut configurer le dépôt distant :
 
@@ -209,3 +207,5 @@ Afin de forcer l'utilisation des Pull Requests et rendre l'étape de linting obl
 5. Cocher l'option **Require status checks to pass before merging** et sélectionner le nom de notre job (`lint`) pour le rendre strictement obligatoire.
 
 6. Cliquer sur **Create** pour sauvegarder la règle.
+
+Se rendre dans l'onglet "Actions" de votre dépôt GitHub pour voir le workflow en action à chaque PR. Ainsi, si le workflow échoue, la pull request ne pourra pas être mergée tant que les problèmes ne seront pas corrigés.
