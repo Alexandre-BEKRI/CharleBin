@@ -145,3 +145,67 @@ Si vous souhaitez faire un commit sans exécuter le hook (par exemple, pour des 
 ```
 
 > **Attention** : Utiliser `--no-verify` peut entraîner l'introduction de code non conforme aux standards de qualité, il est donc recommandé de l'utiliser avec parcimonie.
+
+## CI (Continuous Integration)
+La CI (Continuous Integration) est un principe qui permet de lancer des outils de qualité de code sur chaque PR. Cela garantit que le code reste de haute qualité et permet d'interdire de la merger dans main si les attentes ne sont pas respectées.
+
+### Mise en place d'un workflow GitHub Actions pour le linting
+1. Créer le dossier `.github/workflows` à la racine du projet (s'il n'existe pas déjà) :
+```bash
+mkdir -p .github/workflows
+```
+
+2. Création d'un workflow GitHub Actions dans `.github/workflows/lint.yml` :
+```yaml
+name: Lint PHP
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Rapatrie le code source du dépôt sur le serveur GitHub (pour pouvoir l'analyser)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configure l'environnement PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      # 3. Installe les linters via Composer
+      - name: Install dependencies
+        run: composer install
+
+      # 4. Exécute les 3 linters d'un coup
+      - name: Run lint via Makefile
+        run: make lint
+```
+3. Poussez ce workflow sur votre branche :
+```bash
+git add .github/workflows/lint.yml
+git commit -m "Ajout du workflow CI lint"
+git push -u origin main
+```
+
+4. Ce rendre dans l'onglet "Actions" de votre dépôt GitHub pour voir le workflow en action à chaque PR. Si le workflow échoue, la PR ne pourra pas être mergée tant que les problèmes ne seront pas corrigés.
+
+### Protéger la branche principale (`main`)
+Afin de forcer l'utilisation des Pull Requests et rendre l'étape de linting obligatoire avant toute fusion, il faut configurer le dépôt distant :
+
+1. Aller dans l'onglet **Settings** du dépôt GitHub.
+
+2. Dans le menu de gauche, cliquer sur **Branches** puis sur **Add branch protection rule**.
+
+3. Dans le champ **Branch name pattern**, indiquer `main`.
+
+4. Cocher l'option **Require a pull request before merging** pour forcer la création de PR.
+
+5. Cocher l'option **Require status checks to pass before merging** et sélectionner le nom de notre job (`lint`) pour le rendre strictement obligatoire.
+
+6. Cliquer sur **Create** pour sauvegarder la règle.

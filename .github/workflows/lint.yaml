@@ -1,0 +1,28 @@
+name: Lint PHP
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Rapatrie le code source du dépôt sur le serveur GitHub (pour pouvoir l'analyser)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configure l'environnement PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      # 3. Installe les linters via Composer
+      - name: Install dependencies
+        run: composer install
+
+      # 4. Exécute les 3 linters d'un coup
+      - name: Run lint via Makefile
+        run: make lint
