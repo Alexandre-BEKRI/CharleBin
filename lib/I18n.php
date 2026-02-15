@@ -78,11 +78,10 @@ class I18n
      *
      * @access public
      * @static
-     * @param  string $messageId
      * @param  mixed $args one or multiple parameters injected into placeholders
      * @return string
      */
-    public static function _($messageId)
+    public static function _()
     {
         return forward_static_call_array('PrivateBin\I18n::translate', func_get_args());
     }
