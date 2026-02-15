@@ -6,6 +6,6 @@ class testClass
     {
         $unused = 42; // Variable utilisée (non détectée par PHP MD)
 
-        echo $unused; // Eviter une erreur de code inutilisé
+        echo "toto"; // Erreur MD détectée
     }
 }
