@@ -204,7 +204,9 @@ Afin de forcer l'utilisation des Pull Requests et rendre l'étape de linting obl
 
 4. Cocher l'option **Require a pull request before merging** pour forcer la création de PR.
 
-5. Cocher l'option **Require status checks to pass before merging** et sélectionner le nom de notre job (`lint`) pour le rendre strictement obligatoire.
+5. Cocher l'option **Require status checks to pass before merging** , puis après qu’une première Pull Request ait déclenché le workflow, sélectionner le nom de notre job (`lint`) pour le rendre strictement obligatoire.
+
+> **Remarque Importante** : Si le nom de votre job (`lint`) n'apparaît pas dans la barre de recherche, vous pouvez sauvegarder la règle malgré tout. Il vous faudra ensuite créer une PR pour que le workflow s'exécute au moins une fois. Une fois ceci fait, le job sera référencé dans la liste des status checks requis. (cf. Processus de Pull Request - `contribution.md`)
 
 6. Cliquer sur **Create** pour sauvegarder la règle.
 
